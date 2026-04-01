@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "SoB Nostr Verified Zap (MVP)",
+  "version": "0.1.0",
+  "description": "Injects a Zap button for Nostr-verified tweet authors on X.com.",
+  "content_scripts": [
+    {
+      "matches": ["https://x.com/*", "https://twitter.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "host_permissions": ["https://firestore.googleapis.com/*"]
+}
