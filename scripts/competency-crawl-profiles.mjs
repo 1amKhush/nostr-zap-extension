@@ -6,10 +6,12 @@ const FIRESTORE_RUN_QUERY_URL =
 
 const MAX_QUERY_ROWS = 400;
 const OUTPUT_COUNT = 10;
+const FETCH_TIMEOUT_MS = 7000;
 
 const NOSTR_KEYWORDS = ["nostr", "npub", "nip-05", "nip05", "relay", "zap", "zaps"];
 const BITCOIN_KEYWORDS = ["bitcoin", "btc", "sats", "lightning", "bitcoiner", "ln", "cashu", "ecash", "pleb"];
 const NPUB_PATTERN = /\bnpub1[023456789acdefghjklmnpqrstuvwxyz]{20,120}\b/gi;
+const NPUB_EXACT_PATTERN = /^npub1[023456789acdefghjklmnpqrstuvwxyz]{20,120}$/i;
 const NIP05_PATTERN = /\b[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}\b/gi;
 const LIGHTNING_HINTS = ["getalby", "ln.tips", "zbd.gg", "walletofsatoshi", "lightning"];
 
@@ -31,10 +33,11 @@ async function main() {
   const seenHandles = new Set();
 
   for (const item of candidates) {
-    if (seenHandles.has(item.handle)) {
+    const handleKey = item.handle.toLowerCase();
+    if (seenHandles.has(handleKey)) {
       continue;
     }
-    seenHandles.add(item.handle);
+    seenHandles.add(handleKey);
     uniqueByHandle.push(item);
     if (uniqueByHandle.length >= OUTPUT_COUNT) {
       break;
@@ -52,6 +55,11 @@ async function main() {
 }
 
 async function fetchVerifiedRows() {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => {
+    controller.abort();
+  }, FETCH_TIMEOUT_MS);
+
   const payload = {
     structuredQuery: {
       from: [{ collectionId: "twitter" }],
@@ -79,24 +87,30 @@ async function fetchVerifiedRows() {
     }
   };
 
-  const response = await fetch(FIRESTORE_RUN_QUERY_URL, {
-    method: "POST",
-    headers: {
-      "content-type": "application/json"
-    },
-    body: JSON.stringify(payload)
-  });
+  try {
+    const response = await fetch(FIRESTORE_RUN_QUERY_URL, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json"
+      },
+      body: JSON.stringify(payload),
+      signal: controller.signal,
+      cache: "no-store"
+    });
 
-  if (!response.ok) {
-    throw new Error(`Firestore query failed with status ${response.status}`);
+    if (!response.ok) {
+      throw new Error(`Firestore query failed with status ${response.status}`);
+    }
+
+    const rows = await response.json();
+    if (!Array.isArray(rows)) {
+      throw new Error("Unexpected Firestore response payload");
+    }
+
+    return rows;
+  } finally {
+    clearTimeout(timeoutId);
   }
-
-  const rows = await response.json();
-  if (!Array.isArray(rows)) {
-    throw new Error("Unexpected Firestore response payload");
-  }
-
-  return rows;
 }
 
 function parseCandidate(row) {
@@ -105,13 +119,13 @@ function parseCandidate(row) {
     return null;
   }
 
-  const handle = getString(fields, "screenName");
+  const handle = normalizeHandle(getString(fields, "screenName"));
   const userName = getString(fields, "userName") ?? "";
-  const npub = getString(fields, "nPubKey") ?? getString(fields, "pubkey");
+  const npub = (getString(fields, "nPubKey") ?? getString(fields, "pubkey") ?? "").trim();
   const verified = getBool(fields, "verified") === true;
   const isValid = getBool(fields, "isValid") === true;
 
-  if (!verified || !isValid || !handle || !npub) {
+  if (!verified || !isValid || !handle || !NPUB_EXACT_PATTERN.test(npub)) {
     return null;
   }
 
@@ -262,6 +276,15 @@ function truncate(value, maxLength) {
     return value;
   }
   return `${value.slice(0, Math.max(0, maxLength - 3))}...`;
+}
+
+function normalizeHandle(value) {
+  if (!value) {
+    return null;
+  }
+
+  const normalized = value.trim().replace(/^@/, "").toLowerCase();
+  return normalized || null;
 }
 
 main().catch((error) => {
