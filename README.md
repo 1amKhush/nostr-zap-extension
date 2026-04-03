@@ -1,4 +1,4 @@
-# SoB Nostr Verified Zap Extension (MVP)
+# Nostr Verified Zap Extension (MVP)
 
 This workspace contains a production-quality MVP for the SoB 2026 Nostr Components competency test overlap with Issue #64:
 
