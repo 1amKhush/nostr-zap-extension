@@ -8,7 +8,8 @@
     "build": "node scripts/build.mjs",
     "build:watch": "node scripts/build.mjs --watch",
     "typecheck": "tsc --noEmit",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "competency:profiles": "node scripts/competency-crawl-profiles.mjs"
   },
   "devDependencies": {
     "esbuild": "^0.25.2",

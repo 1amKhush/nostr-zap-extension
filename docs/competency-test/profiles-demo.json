@@ -1,0 +1,259 @@
+{
+  "generatedAt": "2026-04-03T14:49:08.546Z",
+  "source": "nostr.directory Firestore (twitter collection)",
+  "query": "verified == true, then filter locally: isValid == true, npub exists",
+  "selection": "Top scored Bitcoin/Nostr profiles by bio/tweet signal heuristics",
+  "profiles": [
+    {
+      "handle": "aferreira44",
+      "userName": "ANÐRΞ ₿ 🍊⚡🔑🏴‍☠️",
+      "npub": "npub1j0zps3jv55770dxtlrusglgkr3zg606kpx5z99v8psmtajct0pzqemwzrv",
+      "followers": 1293,
+      "profileUrl": "https://x.com/aferreira44",
+      "signals": {
+        "matchedNostr": [
+          "nostr",
+          "npub"
+        ],
+        "matchedBitcoin": [
+          "bitcoin",
+          "bitcoiner"
+        ],
+        "npubMentions": [
+          "npub1j0zps3jv55770dxtlrusglgkr3zg606kpx5z99v8psmtajct0pzqemwzrv"
+        ],
+        "nip05Candidates": [
+          "aferreira44@zbd.gg"
+        ],
+        "lightningAddresses": [
+          "aferreira44@zbd.gg"
+        ]
+      },
+      "bioSnippet": "Software engineer | Bitcoiner | Free Thinker\n\n⚡aferreira44@zbd.gg"
+    },
+    {
+      "handle": "PasiPaananen",
+      "userName": "Pasi",
+      "npub": "npub1r59vpy70a63k5xj5nk4ulyjl47549fvayxxp7vmth64h7tptkkhq6gg0zt",
+      "followers": 336,
+      "profileUrl": "https://x.com/PasiPaananen",
+      "signals": {
+        "matchedNostr": [
+          "nostr",
+          "npub"
+        ],
+        "matchedBitcoin": [
+          "bitcoin",
+          "pleb"
+        ],
+        "npubMentions": [
+          "npub1r59vpy70a63k5xj5nk4ulyjl47549fvayxxp7vmth64h7tptkkhq6gg0zt"
+        ],
+        "nip05Candidates": [
+          "pasi@getalby.com",
+          "pasi@nostrplebs.com"
+        ],
+        "lightningAddresses": [
+          "pasi@getalby.com"
+        ]
+      },
+      "bioSnippet": "#Bitcoin only. Everything else is a liability. Not your keys, not Bitcoin.\n⚡pasi@getalby.com\nNostr: pasi@nostrplebs.com"
+    },
+    {
+      "handle": "villawolf_eth",
+      "userName": "villawolf.eth .lens .stark .crypto 🦇🔊",
+      "npub": "npub148pvrygnkluzg4he2cdc7h05a7ekpmugag42yplhkycel2awxtasjkdfds",
+      "followers": 195,
+      "profileUrl": "https://x.com/villawolf_eth",
+      "signals": {
+        "matchedNostr": [
+          "nostr",
+          "npub"
+        ],
+        "matchedBitcoin": [
+          "pleb"
+        ],
+        "npubMentions": [
+          "npub148pvrygnkluzg4he2cdc7h05a7ekpmugag42yplhkycel2awxtasjkdfds"
+        ],
+        "nip05Candidates": [
+          "villawolf@nostrplebs.com",
+          "villawolf@getalby.com"
+        ],
+        "lightningAddresses": [
+          "villawolf@getalby.com"
+        ]
+      },
+      "bioSnippet": "Informático, apasionado de las DeFi sobre Ethereum y las L2\n #nostr | villawolf@nostrplebs.com\n⚡️villawolf@getalby.com"
+    },
+    {
+      "handle": "BobbyBuckle",
+      "userName": "Bobby Buckle",
+      "npub": "npub1h9cm6hsf6ewv3qed8dee5h00qd63fhdpy8d0n7q4kwfs7mlmraxqaqperu",
+      "followers": 125,
+      "profileUrl": "https://x.com/BobbyBuckle",
+      "signals": {
+        "matchedNostr": [
+          "nostr",
+          "npub"
+        ],
+        "matchedBitcoin": [
+          "bitcoin"
+        ],
+        "npubMentions": [
+          "npub1h9cm6hsf6ewv3qed8dee5h00qd63fhdpy8d0n7q4kwfs7mlmraxqaqperu"
+        ],
+        "nip05Candidates": [
+          "bobbybuckle@getalby.com"
+        ],
+        "lightningAddresses": [
+          "bobbybuckle@getalby.com"
+        ]
+      },
+      "bioSnippet": "#Spurs, Football and #Bitcoin on Twitter. Other interests irl. #FuckFifa and #shitcoins \n⚡bobbybuckle@getalby.com"
+    },
+    {
+      "handle": "btcmap",
+      "userName": "⚡ BTC Map ⚡",
+      "npub": "npub1864jglrrhv6alguwql9pqtmd5296nww5dpcewapmmcazk8vq4mks0tt2tq",
+      "followers": 4727,
+      "profileUrl": "https://x.com/btcmap",
+      "signals": {
+        "matchedNostr": [
+          "nostr",
+          "npub"
+        ],
+        "matchedBitcoin": [
+          "bitcoin",
+          "btc",
+          "sats",
+          "bitcoiner"
+        ],
+        "npubMentions": [
+          "npub1864jglrrhv6alguwql9pqtmd5296nww5dpcewapmmcazk8vq4mks0tt2tq"
+        ],
+        "nip05Candidates": [
+          "hello@btcmap.org"
+        ],
+        "lightningAddresses": []
+      },
+      "bioSnippet": "Easily find places to spend sats anywhere on the planet.\n\nOpenStreetMap powered map apps for Bitcoiners.\n\nFOSS all the way down. No shills.\n\nhello@btcmap.org"
+    },
+    {
+      "handle": "jonyclapes",
+      "userName": "Jony G. Clapes",
+      "npub": "npub1gw62y8w76m27j07m8rptrwccqe7zqf9wg6vv94c5hq6pelhgwges66a6wg",
+      "followers": 525,
+      "profileUrl": "https://x.com/jonyclapes",
+      "signals": {
+        "matchedNostr": [
+          "nostr",
+          "npub"
+        ],
+        "matchedBitcoin": [
+          "bitcoin",
+          "bitcoiner",
+          "pleb"
+        ],
+        "npubMentions": [
+          "npub1gw62y8w76m27j07m8rptrwccqe7zqf9wg6vv94c5hq6pelhgwges66a6wg"
+        ],
+        "nip05Candidates": [
+          "jonyclapes@nostrplebs.com"
+        ],
+        "lightningAddresses": []
+      },
+      "bioSnippet": "Brand Director | HBS | Ex-Google | Yogui | Bitcoiner ⚡️| jonyclapes@nostrplebs.com"
+    },
+    {
+      "handle": "misescapital",
+      "userName": "Mises Capital 🔑",
+      "npub": "npub174s2x2yzvgme9fgz3najyw694v9h027rupuu0uzw43h9r736re9svgkm3p",
+      "followers": 57681,
+      "profileUrl": "https://x.com/misescapital",
+      "signals": {
+        "matchedNostr": [
+          "nostr",
+          "npub"
+        ],
+        "matchedBitcoin": [
+          "bitcoin"
+        ],
+        "npubMentions": [
+          "npub174s2x2yzvgme9fgz3najyw694v9h027rupuu0uzw43h9r736re9svgkm3p"
+        ],
+        "nip05Candidates": [],
+        "lightningAddresses": []
+      },
+      "bioSnippet": "#Bitcoin"
+    },
+    {
+      "handle": "GeorgeDonnelly",
+      "userName": "George Donnelly",
+      "npub": "npub1e6944kzuv2na245u59lncsfgcdn5ueyhks5mrvul3xwy7329yscqx806zu",
+      "followers": 9468,
+      "profileUrl": "https://x.com/GeorgeDonnelly",
+      "signals": {
+        "matchedNostr": [
+          "nostr",
+          "npub"
+        ],
+        "matchedBitcoin": [
+          "bitcoin",
+          "ln"
+        ],
+        "npubMentions": [
+          "npub1e6944kzuv2na245u59lncsfgcdn5ueyhks5mrvul3xwy7329yscqx806zu"
+        ],
+        "nip05Candidates": [],
+        "lightningAddresses": []
+      },
+      "bioSnippet": "12-year #Bitcoin veteran, educator & project manager. I write about #crypto #Web3 #ReFi for builders. Follow for daily essays. Hablo Español. Freelance writer."
+    },
+    {
+      "handle": "skyler_fs",
+      "userName": "Skyler",
+      "npub": "npub1330v3vee2mdvn2npdkquka2upmlrlsp0dl2c6kfnzwhpq6dvkjgq0d2k82",
+      "followers": 4980,
+      "profileUrl": "https://x.com/skyler_fs",
+      "signals": {
+        "matchedNostr": [
+          "nostr",
+          "npub"
+        ],
+        "matchedBitcoin": [
+          "bitcoin"
+        ],
+        "npubMentions": [
+          "npub1330v3vee2mdvn2npdkquka2upmlrlsp0dl2c6kfnzwhpq6dvkjgq0d2k82"
+        ],
+        "nip05Candidates": [],
+        "lightningAddresses": []
+      },
+      "bioSnippet": "Designer of bitcoin experiences\nBitcoin Fundie"
+    },
+    {
+      "handle": "believethehype",
+      "userName": "Don't ₿elieve the Hype⚡ 13% of Bitcoiners ∞/21M",
+      "npub": "npub1nxa4tywfz9nqp7z9zp7nr7d4nchhclsf58lcqt5y782rmf2hefjquaa6q8",
+      "followers": 4613,
+      "profileUrl": "https://x.com/believethehype",
+      "signals": {
+        "matchedNostr": [
+          "nostr",
+          "npub"
+        ],
+        "matchedBitcoin": [
+          "bitcoin",
+          "sats"
+        ],
+        "npubMentions": [
+          "npub1nxa4tywfz9nqp7z9zp7nr7d4nchhclsf58lcqt5y782rmf2hefjquaa6q8"
+        ],
+        "nip05Candidates": [],
+        "lightningAddresses": []
+      },
+      "bioSnippet": "And yet, #Bitcoin lives on - The IMF. \nWeird mountain man.\nTop economist.\nOn digital detox.\n#fckthisdystopia\n\nStack Sats with @relai_app: .5% off with code HYPE"
+    }
+  ]
+}
