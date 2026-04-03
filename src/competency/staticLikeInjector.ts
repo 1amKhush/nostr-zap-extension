@@ -8,20 +8,16 @@ const STATUS_PATH_PATTERN = /^\/[a-z0-9_]{1,15}\/status\/(\d+)/i;
 
 export class XSingleTweetLikeInjector {
   private observer: MutationObserver | null = null;
+  private scheduledFrame: number | null = null;
+  private lastPathname: string | null = null;
+  private cachedStatusId: string | null = null;
 
   start(): void {
     this.ensureStyles();
-    this.scan(document);
+    this.scheduleScan();
 
-    this.observer = new MutationObserver((mutations) => {
-      for (const mutation of mutations) {
-        for (const node of Array.from(mutation.addedNodes)) {
-          if (!(node instanceof Element)) {
-            continue;
-          }
-          this.scan(node);
-        }
-      }
+    this.observer = new MutationObserver(() => {
+      this.scheduleScan();
     });
 
     this.observer.observe(document.body, {
@@ -35,43 +31,61 @@ export class XSingleTweetLikeInjector {
   stop(): void {
     this.observer?.disconnect();
     this.observer = null;
+
+    if (this.scheduledFrame !== null) {
+      window.cancelAnimationFrame(this.scheduledFrame);
+      this.scheduledFrame = null;
+    }
   }
 
-  private scan(root: ParentNode): void {
-    const targetStatusId = this.getStatusIdFromPath(window.location.pathname);
+  private scheduleScan(): void {
+    if (this.scheduledFrame !== null) {
+      return;
+    }
+
+    this.scheduledFrame = window.requestAnimationFrame(() => {
+      this.scheduledFrame = null;
+      this.scan();
+    });
+  }
+
+  private scan(): void {
+    const targetStatusId = this.getActiveStatusId();
     if (!targetStatusId) {
       return;
     }
 
-    const tweets: HTMLElement[] = [];
-
-    if (root instanceof Element && root.matches(TWEET_SELECTOR)) {
-      tweets.push(root as HTMLElement);
-    }
-
-    if ("querySelectorAll" in root) {
-      const discovered = root.querySelectorAll<HTMLElement>(TWEET_SELECTOR);
-      discovered.forEach((tweet) => tweets.push(tweet));
-    }
-
-    for (const tweet of tweets) {
-      const tweetId = extractTweetKey(tweet);
-      if (!tweetId || tweetId !== targetStatusId) {
+    const statusAnchors = document.querySelectorAll<HTMLAnchorElement>(`a[href*="/status/${targetStatusId}"]`);
+    for (const anchor of Array.from(statusAnchors)) {
+      const tweet = anchor.closest<HTMLElement>(TWEET_SELECTOR);
+      if (!tweet || extractTweetKey(tweet) !== targetStatusId) {
         continue;
       }
 
-      this.injectStaticLikeButton(tweet);
+      if (this.injectStaticLikeButton(tweet)) {
+        return;
+      }
     }
   }
 
-  private injectStaticLikeButton(tweet: HTMLElement): void {
+  private getActiveStatusId(): string | null {
+    const pathname = window.location.pathname;
+    if (pathname !== this.lastPathname) {
+      this.lastPathname = pathname;
+      this.cachedStatusId = this.getStatusIdFromPath(pathname);
+    }
+
+    return this.cachedStatusId;
+  }
+
+  private injectStaticLikeButton(tweet: HTMLElement): boolean {
     const actionGroup = tweet.querySelector<HTMLElement>('div[role="group"]');
     if (!actionGroup) {
-      return;
+      return false;
     }
 
     if (actionGroup.querySelector(INJECTED_SELECTOR)) {
-      return;
+      return true;
     }
 
     const actionContainer = document.createElement("div");
@@ -107,6 +121,7 @@ export class XSingleTweetLikeInjector {
 
     actionContainer.appendChild(button);
     actionGroup.appendChild(actionContainer);
+    return true;
   }
 
   private getStatusIdFromPath(pathname: string): string | null {

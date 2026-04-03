@@ -8,6 +8,8 @@ const TWEET_SELECTOR = 'article[data-testid="tweet"]';
 export class XVerifiedButtonInjector {
   private readonly verifier: HandleVerifier;
   private observer: MutationObserver | null = null;
+  private readonly pendingRoots = new Set<ParentNode>();
+  private scheduledFrame: number | null = null;
 
   constructor(verifier: HandleVerifier) {
     this.verifier = verifier;
@@ -15,7 +17,7 @@ export class XVerifiedButtonInjector {
 
   start(): void {
     ensureButtonStyles();
-    this.scan(document);
+    this.queueScan(document);
 
     this.observer = new MutationObserver((mutations) => {
       for (const mutation of mutations) {
@@ -23,7 +25,7 @@ export class XVerifiedButtonInjector {
           if (!(node instanceof Element)) {
             continue;
           }
-          this.scan(node);
+          this.queueScan(node);
         }
       }
     });
@@ -39,18 +41,47 @@ export class XVerifiedButtonInjector {
   stop(): void {
     this.observer?.disconnect();
     this.observer = null;
+
+    if (this.scheduledFrame !== null) {
+      window.cancelAnimationFrame(this.scheduledFrame);
+      this.scheduledFrame = null;
+    }
+
+    this.pendingRoots.clear();
+  }
+
+  private queueScan(root: ParentNode): void {
+    this.pendingRoots.add(root);
+
+    if (this.scheduledFrame !== null) {
+      return;
+    }
+
+    this.scheduledFrame = window.requestAnimationFrame(() => {
+      this.scheduledFrame = null;
+      this.flushQueuedScans();
+    });
+  }
+
+  private flushQueuedScans(): void {
+    const roots = [...this.pendingRoots];
+    this.pendingRoots.clear();
+
+    for (const root of roots) {
+      this.scan(root);
+    }
   }
 
   private scan(root: ParentNode): void {
-    const tweets: HTMLElement[] = [];
+    const tweets = new Set<HTMLElement>();
 
     if (root instanceof Element && root.matches(TWEET_SELECTOR)) {
-      tweets.push(root as HTMLElement);
+      tweets.add(root as HTMLElement);
     }
 
     if ("querySelectorAll" in root) {
       const discovered = root.querySelectorAll<HTMLElement>(TWEET_SELECTOR);
-      discovered.forEach((tweet) => tweets.push(tweet));
+      discovered.forEach((tweet) => tweets.add(tweet));
     }
 
     for (const tweet of tweets) {
@@ -96,6 +127,7 @@ export class XVerifiedButtonInjector {
   }
 
   private async resolveVerification(tweet: HTMLElement): Promise<void> {
+    const expectedTweetKey = tweet.dataset.sobTweetKey;
     const handle = extractTweetHandle(tweet);
     if (!handle) {
       tweet.dataset.sobState = "awaiting_handle";
@@ -103,6 +135,12 @@ export class XVerifiedButtonInjector {
     }
 
     const result = await this.verifier.verify(handle);
+
+    // X can recycle article nodes while an async lookup is running.
+    if (tweet.dataset.sobTweetKey !== expectedTweetKey) {
+      return;
+    }
+
     if (!result.verified || !result.npub) {
       tweet.dataset.sobState = "unverified";
       return;
