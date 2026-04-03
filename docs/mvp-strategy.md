@@ -4,6 +4,7 @@
 
 Deliver the competency-test-first implementation path that directly overlaps with Issue #64:
 
+- Prove extension DOM injection on single tweet pages with a static Like button.
 - Add a Zap affordance on tweet cards.
 - Gate visibility using nostr.directory verified identity mapping.
 
@@ -33,6 +34,18 @@ This gives stable structured JSON and avoids brittle DOM scraping.
   - Injects or removes button idempotently
 - `Button renderer`
   - Lightweight, accessible button with verified profile deep link to nostr.directory
+- `XSingleTweetLikeInjector`
+  - Targets `/:handle/status/:id` routes
+  - Injects a static competency Like button into the status tweet action bar
+  - Toggles local button state only (no external API dependency)
+
+## Competency Data Demonstration
+
+- `scripts/competency-crawl-profiles.mjs`
+  - Pulls verified identities from nostr.directory Firestore
+  - Extracts pubkey/NIP-05/keyword signals from profile bios and tweet text
+  - Filters likely Bitcoin/Nostr users
+  - Emits ~10 real profiles to `docs/competency-test/profiles-demo.{json,md}`
 
 ## Risk Controls
 

@@ -4,6 +4,7 @@ This workspace contains a production-quality MVP for the SoB 2026 Nostr Componen
 
 - Runs as a Manifest V3 browser extension.
 - Injects a Zap button on X.com / Twitter tweet cards.
+- Injects a static Like button on individual tweet pages (`/:handle/status/:id`) for competency validation.
 - Shows the button only when the tweet author is verified on nostr.directory.
 - Uses live public Firestore lookup against nostr.directory data (no brittle HTML scraping).
 
@@ -25,6 +26,7 @@ The verifier queries:
 npm install
 npm run typecheck
 npm run build
+npm run competency:profiles
 ```
 
 Build output is written to `dist/`.
@@ -49,12 +51,20 @@ Set any one of these flags to enable debug logging:
 
 Included:
 
+- Static Like button injection for individual tweet pages (competency requirement).
 - Verified-only Zap button injection.
 - Firestore-backed identity verification.
 - Handle-level dedupe cache, TTL caching, and concurrent request limiting.
+- Profile crawl demonstration generator for ~10 real Bitcoin/Nostr profiles.
 
 Deferred (outside MVP):
 
 - Real zap execution flow.
 - YouTube integration.
 - Relay-side URL-zap wiring.
+
+## Competency Test Artifacts
+
+- Implementation details: `docs/competency-test.md`
+- Generated profile demo JSON: `docs/competency-test/profiles-demo.json`
+- Generated profile demo markdown: `docs/competency-test/profiles-demo.md`
